@@ -1,10 +1,15 @@
 const Expense = require("../models/expenses");
 const asyncHandler = require("express-async-handler");
 
+// home page
+exports.index = asyncHandler(async (req, res, next) => {
+    res.send("NOT IMPLEMENTED: Site Home Page");
+});
+
 // Display list of all expenses.
 exports.expense_list = asyncHandler(async (req, res, next) => {
     res.send("NOT IMPLEMENTED: expense list");
-  });
+});
   
 // Display detail page for a specific expense.
 exports.expense_detail = asyncHandler(async (req, res, next) => {

@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const StoreSchema = new Schema({
-  name: {type: String},
+  name: {type: String, required: true},
   location: {type: String}
 });
 

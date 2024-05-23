@@ -14,7 +14,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 mongoose.set("strictQuery", false);
-const mongoDB = "mongodb://127.0.0.1/my_database";
+const mongoDB = "mongodb+srv://vincentnguyen030:gx3jDa0etj36gvk6@cluster0.sxouce6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 main().catch((err) => console.log(err));
 async function main() {
   await mongoose.connect(mongoDB);

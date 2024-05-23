@@ -9,4 +9,8 @@ const StoreSchema = new Schema({
   location: {type: String}
 });
 
+StoreSchema.virtual("url").get(function() {
+  return `/catalog/store/${this._id}`
+})
+
 module.exports = mongoose.model("Stores", StoreSchema);

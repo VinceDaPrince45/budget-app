@@ -8,4 +8,8 @@ const SpendingCategoriesSchema = new Schema({
     name: {type:string, required:true},
 });
 
+SpendingCategoriesSchema.virtual("url").get(function () {
+    return `/categories/spendingcategory/${this._id}`;
+});
+
 module.exports = mongoose.model("SpendingCategories",SpendingCategoriesSchema);

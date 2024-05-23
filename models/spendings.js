@@ -8,8 +8,13 @@ const ExpenseSchema = new Schema({
   item_name: {type: String, required: true},
   date_bought: {type: Date},
   item_description: {type: String},
+  store_bought: {type: Schema.Types.ObjectId, ref:"Stores"},
   categories: [{type: Schema.Types.ObjectId, ref:"SpendingCategories"}],
-  price: {type: Number}
-})
+  price: {type: Number, required: true}
+});
+
+ExpenseSchema.virtual("url").get(function () {
+  return `/catalog/expense/${this._id}`;
+});
 
 module.exports = mongoose.model("Expenses", ExpenseSchema);

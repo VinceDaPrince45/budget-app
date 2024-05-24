@@ -1,0 +1,20 @@
+<h1><strong>Name: <%= expense.item_name %></strong></h1>
+<p><strong>Price:</strong> $<%= expense.price %></p>
+<p><strong>Date Bought:</strong> <%= expense.date_bought_formatted %></p>
+<p><strong>Bought From:</strong> <%= expense.store_bought.name %></p>
+<p><strong>Description:</strong> <%= expense.item_description %></p>
+<% if (expense.categories && expense.categories.length > 0) { %>
+    <p><strong>Categories:</strong>
+    <% expense.categories.forEach(function(category) { %>
+        <li><%= category.name %></li>
+    <% }) %>
+    </p>
+<% } %>
+
+<hr>
+<p>
+    <a href="<%= expense.url %>/delete">Delete Expense</a>
+</p>
+<p>
+    <a href="<%= expense.url %>/update">Update Expense</a>
+</p>

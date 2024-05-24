@@ -78,7 +78,17 @@ exports.expense_list = asyncHandler(async (req, res, next) => {
   
 // Display detail page for a specific expense.
 exports.expense_detail = asyncHandler(async (req, res, next) => {
-res.send(`NOT IMPLEMENTED: expense detail: ${req.params.id}`);
+  const expense = await Expense.findById(req.params.id).populate("categories").populate("store_bought").exec();
+  if (expense == null) {
+    const err = new Error("Expense not found");
+    err.status(404);
+    return next(err);
+  }
+  console.log(expense);
+  res.render("layout",{
+    title:"Expense Detail",
+    expense:expense
+  });
 });
 
 // Display expense create form on GET.

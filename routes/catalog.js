@@ -17,14 +17,14 @@ router.get("/expense/:id/delete",expense_controller.expense_delete_get);
 router.post("/expense/:id/delete",expense_controller.expense_delete_post);
 // updating expense
 router.get("/expense/:id/update",expense_controller.expense_update_get);
-router.get("/expense/:id/update",expense_controller.expense_update_post);
+router.post("/expense/:id/update",expense_controller.expense_update_post);
 // one expense detail
 router.get("/expense/:id",expense_controller.expense_detail);
-// get expenses within period of time
-router.get("/expense/date",expense_controller.expense_date_get);
-router.get("/expense/date",expense_controller.expense_date_post);
 // list of expenses
 router.get("/expenses",expense_controller.expense_list);
+// get expenses within period of time
+router.get("/expenses/by-date",expense_controller.expense_date_get);
+// router.get("/expenses/by-date",expense_controller.expense_date_post);
 
 // creating an spending category
 router.get("/spendingcategory/create",spending_category_controller.spending_category_create_get);
@@ -34,7 +34,7 @@ router.get("/spendingcategory/:id/delete",spending_category_controller.spending_
 router.post("/spendingcategory/:id/delete",spending_category_controller.spending_category_delete_post);
 // updating spending category
 router.get("/spendingcategory/:id/update",spending_category_controller.spending_category_update_get);
-router.get("/spendingcategory/:id/update",spending_category_controller.spending_category_update_post);
+router.post("/spendingcategory/:id/update",spending_category_controller.spending_category_update_post);
 // one spending category detail
 router.get("/spendingcategory/:id",spending_category_controller.spending_category_detail);
 // list of spending category
@@ -48,7 +48,7 @@ router.get("/store/:id/delete",store_controller.store_delete_get);
 router.post("/store/:id/delete",store_controller.store_delete_post);
 // updating store
 router.get("/store/:id/update",store_controller.store_update_get);
-router.get("/store/:id/update",store_controller.store_update_post);
+router.post("/store/:id/update",store_controller.store_update_post);
 // one store detail
 router.get("/store/:id",store_controller.store_detail);
 // list of stores

@@ -9,7 +9,7 @@ const SpendingCategoriesSchema = new Schema({
 });
 
 SpendingCategoriesSchema.virtual("url").get(function () {
-    return `/categories/spendingcategory/${this._id}`;
+    return `/catalog/spendingcategory/${this._id}`;
 });
 
 module.exports = mongoose.model("SpendingCategories",SpendingCategoriesSchema);

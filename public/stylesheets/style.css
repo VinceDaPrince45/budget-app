@@ -12,3 +12,12 @@ a {
   padding: 0;
   list-style: none;
 }
+
+/* Remove margins from <p> elements inside .expense */
+.expense p {
+  margin: 0;
+}
+
+.expense {
+  margin-bottom:1em;
+}

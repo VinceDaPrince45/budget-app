@@ -18,6 +18,7 @@
                     <li><a href="/catalog/expenses">All expenses</a></li>
                     <li><a href="/catalog/stores">All stores</a></li>
                     <li><a href="/catalog/spendingcategories">All spending categories</a></li>
+                    <li><a href="/catalog/expenses/by-date">Spending by Date</a></li>
                     <li><hr></li>
                     <li><a href="/catalog/expense/create">Create new expense</a></li>
                     <li><a href="/catalog/store/create">Create new store</a></li>
@@ -27,6 +28,14 @@
             <div class="col-sm-10">
               <% if (title == "Home") { %>
                 <%- include ('home') %>
+              <% } else if (title == "Expense List") { %>
+                <%- include ('expense_list') %>
+              <% } else if (title == "Spending Categories List") { %>
+                <%- include ('spending_categories_list') %>
+              <% } else if (title == "Stores List") { %>
+                <%- include ('store_list') %>
+              <% } else if (title == "Expenses by Date") { %>
+                <%- include ('expense_by_date_form') %>
               <% } %>
             </div >
         </div>

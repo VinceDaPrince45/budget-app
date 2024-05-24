@@ -3,8 +3,12 @@ const asyncHandler = require("express-async-handler");
 
 // Display list of all stores.
 exports.store_list = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: store list");
-  });
+  allStores = await Store.find({}).sort({name:1}).exec();
+  res.render("layout",{
+    title:"Stores List",
+    store_list:allStores
+  })
+});
   
 // Display detail page for a specific store.
 exports.store_detail = asyncHandler(async (req, res, next) => {

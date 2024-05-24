@@ -37,7 +37,7 @@ const getItemsByDateRange = async (startDate, endDate) => {
         $gte: start,
         $lte: end
       }
-    });
+    },"item_name price date_bought").sort({date_bought:1}).exec();
 
     return items;
   } catch (error) {
@@ -69,6 +69,11 @@ exports.index = asyncHandler(async (req, res, next) => {
 
 // Display list of all expenses.
 exports.expense_list = asyncHandler(async (req, res, next) => {
+  const allExpenses = await Expense.find({}, "item_name date_bought price").sort({price:-1}).populate("store_bought").populate("categories").exec();
+  res.render("layout",{
+    title:"Expense List",
+    expense_list: allExpenses
+  })
 });
   
 // Display detail page for a specific expense.
@@ -107,9 +112,31 @@ res.send("NOT IMPLEMENTED: expense update POST");
 });
 
 exports.expense_date_get = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: expense date get");
+  const startDate = req.query.startDate;
+  const endDate = req.query.endDate;
+  console.log(req.query.startDate);
+
+  if (startDate != null && endDate != null) {
+    try {
+      const items = await getItemsByDateRange(startDate, endDate);
+      res.render('layout', {
+        title: 'Expenses by Date', 
+        expenses: items, 
+        startDate:startDate,
+        endDate:endDate
+      });
+    } catch (error) {
+      next(error);
+    }
+  } else {
+    res.render("layout",{
+      title: "Expenses by Date",
+      expenses: null,
+      startDate: null,
+      endDate:null
+    });
+  }
 });
 
 exports.expense_date_post = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: expense date post");
 });

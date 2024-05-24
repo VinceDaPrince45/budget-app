@@ -3,7 +3,11 @@ const asyncHandler = require("express-async-handler");
 
 // Display list of all spending_categorys.
 exports.spending_category_list = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: spending_category list");
+    const allSpendingCategories = await SpendingCategory.find({}).sort({name:1}).exec();
+    res.render("layout",{
+      title:"Spending Categories List",
+      spending_categories_list:allSpendingCategories
+    });
   });
   
 // Display detail page for a specific spending_category.

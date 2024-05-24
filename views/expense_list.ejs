@@ -1,0 +1,15 @@
+<h1><%= title %></h1>
+<% if (expense_list.length) { %>
+    <ul>
+        <% expense_list.forEach(function(expense) { %>
+            <li class="expense">
+                <strong><a href="<%= expense.url %>"><%= expense.item_name %></a></strong>
+                <p>Price: $<%= expense.price %></p>
+                <p>Date Bought: <%= expense.date_bought_formatted %></p>
+                </p>
+            </li>
+        <% }); %>
+    </ul>
+<% } else { %>
+    <p>There are no expenses.</p>
+<% } %>

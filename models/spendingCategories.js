@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const SpendingCategoriesSchema = new Schema({
-    name: {type:string, required:true},
+    name: {type:String, required:true},
 });
 
 SpendingCategoriesSchema.virtual("url").get(function () {

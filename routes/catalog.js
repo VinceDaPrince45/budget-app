@@ -20,6 +20,9 @@ router.get("/expense/:id/update",expense_controller.expense_update_get);
 router.get("/expense/:id/update",expense_controller.expense_update_post);
 // one expense detail
 router.get("/expense/:id",expense_controller.expense_detail);
+// get expenses within period of time
+router.get("/expense/date",expense_controller.expense_date_get);
+router.get("/expense/date",expense_controller.expense_date_post);
 // list of expenses
 router.get("/expenses",expense_controller.expense_list);
 

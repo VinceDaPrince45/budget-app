@@ -2,6 +2,7 @@ const Expense = require("../models/expenses");
 const SpendingCategory = require("../models/spendingCategories");
 const Store = require("../models/stores");
 const asyncHandler = require("express-async-handler");
+const { body, validationResult } = require("express-validator");
 
 // Function to sum up all prices in the expenses schema
 const sumAllPrices = async () => {
@@ -123,7 +124,6 @@ res.send("NOT IMPLEMENTED: expense update POST");
 exports.expense_date_get = asyncHandler(async (req, res, next) => {
   const startDate = req.query.startDate;
   const endDate = req.query.endDate;
-  console.log(req.query.startDate);
 
   if (startDate != null && endDate != null) {
     try {

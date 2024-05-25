@@ -1,6 +1,8 @@
 const SpendingCategory = require("../models/spendingCategories");
 const Expense = require("../models/expenses");
 const asyncHandler = require("express-async-handler");
+const { body, validationResult } = require("express-validator");
+
 
 // Display list of all spending_categorys.
 exports.spending_category_list = asyncHandler(async (req, res, next) => {

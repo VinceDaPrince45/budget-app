@@ -1,0 +1,20 @@
+<h1><strong><%= title %></strong></h1>
+
+<form method="POST">
+    <div class="form-group">
+        <label for="name">Store name:</label>
+        <input id="name" class="form-control" type="text" placeholder="Walmart, Amazon etc." name="name" required value="<%= store ? store.name : '' %>">
+
+        <label for="location">Location:</label>
+        <input id="location" class="form-control" type="text" placeholder="New York, Houston etc." name="location" value="<%= store ? store.location : '' %>">
+    </div>
+    <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+
+<% if (errors) { %>
+    <ul>
+        <% errors.forEach(function(error) { %>
+            <li><%= error.msg %></li>
+        <% }); %>
+    </ul>
+<% } %>

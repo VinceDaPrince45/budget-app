@@ -93,13 +93,82 @@ exports.expense_detail = asyncHandler(async (req, res, next) => {
 
 // Display expense create form on GET.
 exports.expense_create_get = asyncHandler(async (req, res, next) => {
-res.send("NOT IMPLEMENTED: expense create GET");
+  const [allStores,allCategories] = await Promise.all([
+    Store.find({}).sort({name:1}).exec(),
+    SpendingCategory.find({}).sort({name:1}).exec()
+  ]);
+  res.render("layout",{
+    title:"Create Expense",
+    stores:allStores,
+    categories:allCategories,
+    expense:null,
+    errors:null
+  })
 });
 
 // Handle expense create on POST.
-exports.expense_create_post = asyncHandler(async (req, res, next) => {
-res.send("NOT IMPLEMENTED: expense create POST");
-});
+exports.expense_create_post = [
+  // need to convert categories to array
+  (req,res,next) => {
+    if (!Array.isArray(req.body.categories)) {
+      req.body.categories = typeof req.body.categories === "undefined" ? [] : [req.body.categories];
+    }
+    next();
+  },
+  // Validate
+  body("item_name","Item name must not be empty")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("store", "Store must not be empty")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("price","Price must not be empty")
+    .trim()
+    .escape(),
+  body("description","Description must not be empty")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("date", "Invalid date")
+    .optional({ values: "falsy" })
+    .isISO8601()
+    .toDate(),
+  body("categories.*").escape(),
+  asyncHandler(async (req,res,next) => {
+    const errors = validationResult(req);
+    const expense = new Expense({
+      item_name:req.body.item_name,
+      date_bought:req.body.date,
+      item_description:req.body.description,
+      store_bought:req.body.store,
+      categories:req.body.categories,
+      price:req.body.price
+    });
+    if (!errors.isEmpty()) {
+      const [allStores,allCategories] = await Promise.all([
+        Store.find({}).sort({name:1}).exec(),
+        SpendingCategory.find({}).sort({name:1}).exec()
+      ]);
+      for (const category in allCategories) {
+        if (expense.categories.includes(category._id)) {
+          category.checked = "true";
+        }
+      }
+      res.render("layout", {
+        title:"Create Expense",
+        stores:allStores,
+        categories:allCategories,
+        expense:expense,
+        errors:errors.array()
+      });
+    } else {
+      await expense.save();
+      res.redirect(expense.url);
+    }
+  })
+];
 
 // Display expense delete form on GET.
 exports.expense_delete_get = asyncHandler(async (req, res, next) => {

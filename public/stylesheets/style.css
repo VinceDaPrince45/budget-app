@@ -14,10 +14,10 @@ a {
 }
 
 /* Remove margins from <p> elements inside .expense */
-.expense p {
+p {
   margin: 0;
 }
 
-.expense {
+dt {
   margin-bottom:1em;
 }

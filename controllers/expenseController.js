@@ -84,7 +84,6 @@ exports.expense_detail = asyncHandler(async (req, res, next) => {
     err.status(404);
     return next(err);
   }
-  console.log(expense);
   res.render("layout",{
     title:"Expense Detail",
     expense:expense

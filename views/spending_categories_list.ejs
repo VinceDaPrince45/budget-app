@@ -1,13 +1,12 @@
-<h1><%= title %></h1>
+<h1><strong><%= title %></strong></h1>
 <% if (spending_categories_list.length) { %>
-    <ul>
+    <dl>
         <% spending_categories_list.forEach(function(spending_category) { %>
-            <li class="spending_category">
-                <strong><a href="<%= spending_category.url %>"><%= spending_category.name %></a></strong>
-                </p>
-            </li>
+            <dt>
+                <a href="<%= spending_category.url %>"><%= spending_category.name %></a>
+            </dt>
         <% }); %>
-    </ul>
+    </dl>
 <% } else { %>
     <p>There are no spending categories.</p>
 <% } %>

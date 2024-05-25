@@ -1,4 +1,4 @@
-<h1>Select Date Range</h1>
+<h1><strong>Select Date Range</strong></h1>
 <form method="GET">
   <label for="startDate">Start Date:</label>
   <input type="date" id="startDate" name="startDate" value="<%= startDate ? startDate : '' %>" required>
@@ -11,16 +11,15 @@
 
 <h2>Expenses</h2>
   <% if (expenses && expenses.length > 0) { %>
-    <ul id="expensesList">
+    <dl>
       <% expenses.forEach(function(expense) { %>
-        <li class="expense">
+        <dt>
           <strong><a href="<%= expense.url %>"><%= expense.item_name %></a></strong>
           <p>Price: $<%= expense.price %></p>
           <p>Date Bought: <%= expense.date_bought_formatted %></p>
-          </p>
-      </li>
+        </dt>
       <% }); %>
-    </ul>
+    </dl>
   <% } else { %>
     <p>There are no expenses in between these dates.</p>
   <% } %>

@@ -1,0 +1,27 @@
+<h1><strong>Category: <%= spending_category.name %></strong></h1>
+
+<div style="margin-left:20px;margin-top:20px">
+
+    <h2 style="font-size: 1.5rem;">Expenses</h2>
+    <% if (expenses.length) { %>
+        <dl>
+            <% expenses.forEach(function(expense) { %>
+                <dt>
+                    <strong><a href="<%= expense.url %>"><%= expense.item_name %></a></strong>
+                    <p>Price: $<%= expense.price %></p>
+                    <p>Date Bought: <%= expense.date_bought_formatted %></p>
+                </dt>
+            <% }); %>
+        </dl>
+    <% } else { %>
+        <p>This category has no expenses.</p>
+    <% } %>
+</div>
+
+<hr>
+<p>
+    <a href="<%= spending_category.url %>/delete">Delete Category</a>
+</p>
+<p>
+    <a href="<%= spending_category.url %>/update">Update Category</a>
+</p>

@@ -1,13 +1,12 @@
-<h1><%= title %></h1>
+<h1><strong><%= title %></strong></h1>
 <% if (store_list.length) { %>
-    <ul>
+    <dl>
         <% store_list.forEach(function(store) { %>
-            <li class="stores">
-                <strong><a href="<%= store.url %>"><%= store.name %></a></strong>
-                </p>
-            </li>
+            <dt>
+                <a href="<%= store.url %>"><%= store.name %></a>
+            </dt>
         <% }); %>
-    </ul>
+    </dl>
 <% } else { %>
     <p>There are no stores.</p>
 <% } %>

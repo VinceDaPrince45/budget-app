@@ -1,4 +1,5 @@
 const SpendingCategory = require("../models/spendingCategories");
+const Expense = require("../models/expenses");
 const asyncHandler = require("express-async-handler");
 
 // Display list of all spending_categorys.
@@ -12,7 +13,20 @@ exports.spending_category_list = asyncHandler(async (req, res, next) => {
   
 // Display detail page for a specific spending_category.
 exports.spending_category_detail = asyncHandler(async (req, res, next) => {
-res.send(`NOT IMPLEMENTED: spending_category detail: ${req.params.id}`);
+  const [spendingCategory,categoryExpenses] = await Promise.all([
+    SpendingCategory.findById(req.params.id).exec(),
+    Expense.find({categories:req.params.id},"item_name price date_bought").exec()
+  ]);
+  if (spendingCategory == null) {
+    const err = new Error("Expense not found");
+    err.status(404);
+    return next(err);
+  }
+  res.render("layout",{
+    title:"Spending Category Detail",
+    spending_category:spendingCategory,
+    expenses:categoryExpenses
+  });
 });
 
 // Display spending_category create form on GET.

@@ -32,14 +32,44 @@ exports.spending_category_detail = asyncHandler(async (req, res, next) => {
 });
 
 // Display spending_category create form on GET.
-exports.spending_category_create_get = asyncHandler(async (req, res, next) => {
-res.send("NOT IMPLEMENTED: spending_category create GET");
-});
+exports.spending_category_create_get = (req,res,next) => {
+  res.render("layout", {
+    title:"Create Spending Category",
+    category:null,
+    errors:null
+  })
+}
 
 // Handle spending_category create on POST.
-exports.spending_category_create_post = asyncHandler(async (req, res, next) => {
-res.send("NOT IMPLEMENTED: spending_category create POST");
-});
+exports.spending_category_create_post = [
+  body("name","Category name must contain at least 3 characters")
+    .trim()
+    .isLength({min:3})
+    .escape(),
+  asyncHandler(async (req,res,next) => {
+    const errors = validationResult(req);
+    const category = new SpendingCategory({name:req.body.name});
+    if (!errors.isEmpty()) {
+      // There are errors. Render the form again with sanitized values/error messages.
+      res.render("layout", {
+        title: "Create Spending Category",
+        category:category,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      const categoryExists = await SpendingCategory.findOne({ name: req.body.name })
+        .collation({ locale: "en", strength: 2 })
+        .exec();
+      if (categoryExists) {
+        res.redirect(categoryExists.url);
+      } else {
+        await category.save();
+        res.redirect(category.url);
+      }
+    }
+  })
+];
 
 // Display spending_category delete form on GET.
 exports.spending_category_delete_get = asyncHandler(async (req, res, next) => {

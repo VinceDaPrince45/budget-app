@@ -17,6 +17,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 mongoose.set("strictQuery", false);
+app.set('trust proxy', 0);
 const dev_db_url = "mongodb+srv://vincentnguyen030:gx3jDa0etj36gvk6@cluster0.sxouce6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const mongoDB = process.env.MONGODB_URI || dev_db_url;
 main().catch((err) => console.log(err));

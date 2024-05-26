@@ -1,17 +1,23 @@
 <h1><strong>Name: <%= expense.item_name %></strong></h1>
-<p><strong>Price:</strong> $<%= expense.price %></p>
-<p><strong>Date Bought:</strong> <%= expense.date_bought_formatted %></p>
-<p><strong>Bought From: </strong><a href = "<%= expense.store_bought.url %>"><%= expense.store_bought.name %></a></p>
-<p><strong>Description:</strong> <%= expense.item_description %></p>
-<% if (expense.categories && expense.categories.length > 0) { %>
-    <p><strong>Categories:</strong>
-    <% expense.categories.forEach(function(category) { %>
-        <a href="<%= category.url %>">
-            <li><%= category.name %></li>
-        </a>
-    <% }) %>
-    </p>
-<% } %>
+
+<div style="margin-left:20px;margin-top:20px">
+    <h2 style="font-size: 1.5rem;">Details</h2>
+    <p><strong>Price:</strong> $<%= expense.price %></p>
+    <p><strong>Date Bought:</strong> <%= expense.date_bought_formatted %></p>
+    <p><strong>Bought From: </strong><a href = "<%= expense.store_bought.url %>"><%= expense.store_bought.name %></a></p>
+    <p><strong>Description:</strong> <%= expense.item_description %></p>
+    <% if (expense.categories && expense.categories.length > 0) { %>
+        <p><strong>Categories:</strong>
+        <ul>
+            <% expense.categories.forEach(function(category) { %>
+                <a href="<%= category.url %>">
+                    <li><%= category.name %></li>
+                </a>
+            <% }) %>
+        </ul>
+        </p>
+    <% } %>
+</div>
 
 <hr>
 <p>

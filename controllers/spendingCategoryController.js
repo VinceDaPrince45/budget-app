@@ -109,6 +109,13 @@ exports.spending_category_delete_post = asyncHandler(async (req, res, next) => {
 // Display spending_category update form on GET.
 exports.spending_category_update_get = asyncHandler(async (req, res, next) => {
   const category = await SpendingCategory.findById(req.params.id).exec();
+
+  if (category === null) {
+    const err = new Error("Book not found");
+    err.status = 404
+    return next(err);
+  }
+
   res.render("layout", {
     title:"Update Spending Category",
     category:category,

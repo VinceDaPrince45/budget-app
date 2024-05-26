@@ -187,13 +187,95 @@ exports.expense_delete_post = asyncHandler(async (req, res, next) => {
 
 // Display expense update form on GET.
 exports.expense_update_get = asyncHandler(async (req, res, next) => {
-res.send("NOT IMPLEMENTED: expense update GET");
+  const [expense,allStores,allCategories] = await Promise.all([
+    Expense.findById(req.params.id).populate("store_bought").exec(),
+    Store.find({}).sort({name:1}).exec(),
+    SpendingCategory.find({}).sort({name:1}).exec()
+  ]);
+
+  if (expense === null) {
+    const err = new Error("Book not found");
+    err.status = 404
+    return next(err);
+  }
+
+  allCategories.forEach((category) => {
+    if (expense.categories.includes(category._id)) category.checked = "true"
+  });
+  
+  res.render("layout", {
+    title:"Update Expense",
+    stores:allStores,
+    categories:allCategories,
+    expense:expense,
+    errors:null
+  });
 });
 
 // Handle expense update on POST.
-exports.expense_update_post = asyncHandler(async (req, res, next) => {
-res.send("NOT IMPLEMENTED: expense update POST");
-});
+exports.expense_update_post = [
+  // need to convert categories to array
+  (req,res,next) => {
+    if (!Array.isArray(req.body.categories)) {
+      req.body.categories = typeof req.body.categories === "undefined" ? [] : [req.body.categories];
+    }
+    next();
+  },
+  // Validate
+  body("item_name","Item name must not be empty")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("store", "Store must not be empty")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("price","Price must not be empty")
+    .trim()
+    .escape(),
+  body("description","Description must not be empty")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("date", "Invalid date")
+    .optional({ values: "falsy" })
+    .isISO8601()
+    .toDate(),
+  body("categories.*").escape(),
+  asyncHandler(async (req,res,next) => {
+    const errors = validationResult(req);
+    const expense = new Expense({
+      item_name:req.body.item_name,
+      date_bought:req.body.date,
+      item_description:req.body.description,
+      store_bought:req.body.store,
+      categories:req.body.categories,
+      price:req.body.price,
+      _id:req.params.id
+    });
+    if (!errors.isEmpty()) {
+      const [allStores,allCategories] = await Promise.all([
+        Store.find({}).sort({name:1}).exec(),
+        SpendingCategory.find({}).sort({name:1}).exec()
+      ]);
+      for (const category in allCategories) {
+        if (expense.categories.includes(category._id)) {
+          category.checked = "true";
+        }
+      }
+      res.render("layout", {
+        title:"Update Expense",
+        stores:allStores,
+        categories:allCategories,
+        expense:expense,
+        errors:errors.array()
+      });
+    } else {
+      const updatedExpense = await Expense.findByIdAndUpdate(req.params.id,expense,{});
+      res.redirect(updatedExpense.url);
+    }
+  })
+];
 
 exports.expense_date_get = asyncHandler(async (req, res, next) => {
   const startDate = req.query.startDate;
@@ -219,7 +301,4 @@ exports.expense_date_get = asyncHandler(async (req, res, next) => {
       endDate:null
     });
   }
-});
-
-exports.expense_date_post = asyncHandler(async (req, res, next) => {
 });

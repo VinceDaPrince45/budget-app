@@ -46,9 +46,9 @@
                 <%- include ('store_detail') %>
               <% } else if (title == "Create Store" || title == "Update Store") { %>
                 <%- include ('store_form') %>
-              <% } else if (title == "Create Spending Category") { %>
+              <% } else if (title == "Create Spending Category" || title == "Update Spending Category") { %>
                 <%- include ('spending_category_form') %>
-              <% } else if (title == "Create Expense") { %>
+              <% } else if (title == "Create Expense" || title == "Update Expense") { %>
                 <%- include ('expense_form') %>
               <% } else if (title == "Delete Store") { %>
                 <%- include ('store_delete') %>
@@ -56,8 +56,6 @@
                 <%- include ('spending_category_delete') %>
               <% } else if (title == "Delete Expense") { %>
                 <%- include ('expense_delete') %>
-              <% } else if (title == "Update Spending Category") { %>
-                <%- include ('spending_category_form') %>
               <% } %>
             </div >
         </div>

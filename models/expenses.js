@@ -22,4 +22,8 @@ ExpenseSchema.virtual("date_bought_formatted").get(function () {
   return DateTime.fromJSDate(this.date_bought).toLocaleString(DateTime.DATE_MED);
 })
 
+ExpenseSchema.virtual("date_bought_yyyy_mm_dd").get(function () {
+  return DateTime.fromJSDate(this.date_bought).toISODate(); // format 'YYYY-MM-DD'
+});
+
 module.exports = mongoose.model("Expenses", ExpenseSchema);

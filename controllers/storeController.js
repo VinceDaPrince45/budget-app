@@ -120,6 +120,13 @@ exports.store_delete_post = asyncHandler(async (req, res, next) => {
 // Display store update form on GET.
 exports.store_update_get = asyncHandler(async (req, res, next) => {
   const store = await Store.findById(req.params.id).exec();
+
+  if (store === null) {
+    const err = new Error("Book not found");
+    err.status = 404
+    return next(err);
+  }
+
   res.render("layout",{
     title:"Update Store",
     store:store,

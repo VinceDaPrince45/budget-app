@@ -108,10 +108,35 @@ exports.spending_category_delete_post = asyncHandler(async (req, res, next) => {
 
 // Display spending_category update form on GET.
 exports.spending_category_update_get = asyncHandler(async (req, res, next) => {
-res.send("NOT IMPLEMENTED: spending_category update GET");
+  const category = await SpendingCategory.findById(req.params.id).exec();
+  res.render("layout", {
+    title:"Update Spending Category",
+    category:category,
+    errors:null
+  })
 });
 
 // Handle spending_category update on POST.
-exports.spending_category_update_post = asyncHandler(async (req, res, next) => {
-res.send("NOT IMPLEMENTED: spending_category update POST");
-});
+exports.spending_category_update_post = [
+  body("name","Category name must contain at least 3 characters")
+    .trim()
+    .isLength({min:3})
+    .escape(),
+
+    asyncHandler(async (req,res,next) => {
+      const errors = validationResult(req);
+      const category = new SpendingCategory({name:req.body.name,_id:req.params.id});
+      if (!errors.isEmpty()) {
+        // There are errors. Render the form again with sanitized values/error messages.
+        res.render("layout", {
+          title: "Update Spending Category",
+          category:category,
+          errors: errors.array(),
+        });
+        return;
+      } else {
+          const updatedCategory = await SpendingCategory.findByIdAndUpdate(req.params.id,category,{});
+          res.redirect(updatedCategory.url);
+      }
+    })
+];

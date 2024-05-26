@@ -172,7 +172,7 @@ exports.expense_create_post = [
 
 // Display expense delete form on GET.
 exports.expense_delete_get = asyncHandler(async (req, res, next) => {
-  const expense = await Expense.findById(req.params.id).exec();
+  const expense = await Expense.findById(req.params.id).populate("store_bought").exec();
   res.render("layout", {
     title:"Delete Expense",
     expense:expense

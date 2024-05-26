@@ -73,12 +73,37 @@ exports.spending_category_create_post = [
 
 // Display spending_category delete form on GET.
 exports.spending_category_delete_get = asyncHandler(async (req, res, next) => {
-res.send("NOT IMPLEMENTED: spending_category delete GET");
+  const [category,categoryExpenses] = await Promise.all([
+    SpendingCategory.findById(req.params.id).exec(),
+    Expense.find({categories:req.params.id},"item_name price").exec()
+  ]);
+  if (category === null) {
+    res.redirect("/catalog/spendingcategories");
+  }
+  res.render("layout", {
+    title:"Delete Spending Category",
+    category:category,
+    category_expenses:categoryExpenses
+  });
 });
 
 // Handle spending_category delete on POST.
 exports.spending_category_delete_post = asyncHandler(async (req, res, next) => {
-res.send("NOT IMPLEMENTED: spending_category delete POST");
+  const [category,categoryExpenses] = await Promise.all([
+    SpendingCategory.findById(req.params.id).exec(),
+    Expense.find({categories:req.params.id},"item_name price").exec()
+  ]);
+  if (categoryExpenses.length > 0) {
+    res.render("layout", {
+      title:"Delete Spending Category",
+      category:category,
+      category_expenses:categoryExpenses
+    });
+    return;
+  } else {
+    await SpendingCategory.findByIdAndDelete(req.body.category_id);
+    res.redirect("/catalog/spendingcategories");
+  }
 });
 
 // Display spending_category update form on GET.

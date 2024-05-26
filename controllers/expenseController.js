@@ -172,12 +172,17 @@ exports.expense_create_post = [
 
 // Display expense delete form on GET.
 exports.expense_delete_get = asyncHandler(async (req, res, next) => {
-res.send("NOT IMPLEMENTED: expense delete GET");
+  const expense = await Expense.findById(req.params.id).exec();
+  res.render("layout", {
+    title:"Delete Expense",
+    expense:expense
+  });
 });
 
 // Handle expense delete on POST.
 exports.expense_delete_post = asyncHandler(async (req, res, next) => {
-res.send("NOT IMPLEMENTED: expense delete POST");
+  await Expense.findByIdAndDelete(req.body.expense_id);
+  res.redirect("/catalog/expenses");
 });
 
 // Display expense update form on GET.

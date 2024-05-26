@@ -1,0 +1,14 @@
+<h1><strong>Name: <%= expense.item_name %></strong></h1>
+<p><strong>Price:</strong> $<%= expense.price %></p>
+<p><strong>Date Bought:</strong> <%= expense.date_bought_formatted %></p>
+<p><strong>Bought From:</strong> <%= expense.store_bought.name %></p>
+<p><strong>Description:</strong> <%= expense.item_description %></p>
+<br></br>
+<p>Do you really want to delete this expense?</p>
+
+<form method="POST">
+<div class="form-group">
+    <input id="expense_id" class="form-control" type="hidden" name="expense_id" value="<%= expense._id %>">
+</div>
+<button class="btn btn-primary" type="submit">Delete</button>
+</form>

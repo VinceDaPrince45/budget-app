@@ -6,6 +6,7 @@ var logger = require('morgan');
 const mongoose = require("mongoose")
 const compression = require("compression");
 const helmet = require("helmet");
+require('dotenv').config()
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');

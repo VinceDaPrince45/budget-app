@@ -119,10 +119,38 @@ exports.store_delete_post = asyncHandler(async (req, res, next) => {
 
 // Display store update form on GET.
 exports.store_update_get = asyncHandler(async (req, res, next) => {
-res.send("NOT IMPLEMENTED: store update GET");
+  const store = await Store.findById(req.params.id).exec();
+  res.render("layout",{
+    title:"Update Store",
+    store:store,
+    errors:null
+  })
 });
 
 // Handle store update on POST.
-exports.store_update_post = asyncHandler(async (req, res, next) => {
-res.send("NOT IMPLEMENTED: store update POST");
-});
+exports.store_update_post = [
+  body("name","Store name must contain at least 3 characters")
+  .trim()
+  .isLength({min:3})
+  .escape(),
+  body("location")
+  .trim()
+  .escape(),
+  asyncHandler(async (req,res,next) => {
+    const errors = validationResult(req);
+    const store = new Store({name:req.body.name,location:req.body.location,_id:req.params.id});
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render the form again with sanitized values/error messages.
+      res.render("layout", {
+        title: "Update Store",
+        store:store,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      const updatedStore = await Store.findByIdAndUpdate(req.params.id,store,{});
+      res.redirect(updatedStore.url);
+    }
+  })
+];

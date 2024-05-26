@@ -82,12 +82,39 @@ exports.store_create_post = [
 
 // Display store delete form on GET.
 exports.store_delete_get = asyncHandler(async (req, res, next) => {
-res.send("NOT IMPLEMENTED: store delete GET");
+  const [store,allExpensesFromStore] = await Promise.all([
+    Store.findById(req.params.id).exec(),
+    Expense.find({store_bought:req.params.id},"item_name price").exec()
+  ]);
+
+  if (store === null) {
+    res.redirect("/catalog/stores");
+  }
+  res.render("layout", {
+    title:"Delete Store",
+    store:store,
+    store_expenses:allExpensesFromStore
+  })
 });
 
 // Handle store delete on POST.
 exports.store_delete_post = asyncHandler(async (req, res, next) => {
-res.send("NOT IMPLEMENTED: store delete POST");
+  const [store,allExpensesFromStore] = await Promise.all([
+    Store.findById(req.params.id).exec(),
+    Expense.find({store_bought:req.params.id},"item_name price").exec()
+  ]);
+
+  if (allExpensesFromStore.length > 0) {
+    res.render("layout",{
+      title:"Delete Store",
+      store:store,
+      store_expenses:allExpensesFromStore
+    });
+    return;
+  } else {
+    await Store.findByIdAndDelete(req.body.store_id);
+    res.redirect("/catalog/stores");
+  }
 });
 
 // Display store update form on GET.
